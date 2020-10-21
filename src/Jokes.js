@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const Jokes = () => {
-	const [newJoke, setNewJoke] = useState('');
-
 	useEffect(() => {
-		joke();
+		fetchJoke();
 	}, []);
 
-	const joke = () => {
-		const getJoke = axios
-			.get('https://api.chucknorris.io/jokes/random')
-			.then(jokeData => {
-				setNewJoke(jokeData.data.value);
-			});
+	const [randomJoke, setRandomJoke] = useState([]);
+
+	const fetchJoke = async () => {
+		const jokeData = await fetch('https://api.chucknorris.io/jokes/random');
+
+		const joke = await jokeData.json();
+		console.log(joke.value);
+		setRandomJoke(joke.value);
 	};
 
 	return (
 		<div>
 			<h1>Joke Page</h1>
-			<p>{newJoke}</p>
+			<p>{randomJoke}</p>
 		</div>
 	);
 };
